@@ -1,4 +1,4 @@
-import * as http from "http";
+var http = require('http');
 import { Server, Room } from "colyseus";
 
 // Create HTTP & WebSocket servers
