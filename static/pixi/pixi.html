@@ -5,13 +5,13 @@
   <title>The HTML5 Herald</title>
   <meta name="description" content="The HTML5 Herald">
   <meta name="author" content="SitePoint">
-
+  <script src="scripts/pixi.js"></script>
 
 </head>
 <body>
-  <script src="scripts/main.js"></script>
-  <script src="scripts/colyseus.js"></script>
-  <script src="scripts/pixi.js"></script>
-
+  <script type="text/javascript">
+    let app = new PIXI.Application({width: 256, height: 256});
+    document.body.appendChild(app.view);
+  </script>
 </body>
 </html>
