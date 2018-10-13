@@ -2,41 +2,14 @@
 <html>
   <head>
     <script src="scripts/pixi.js"></script>
+    
     <meta name="viewport" content="width=device-width" />
-    <style>
-      body { font-family: Tahoma, Geneva, sans-serif; text-align: center; }
-    </style>
-
     <!-- colyseus.js client (npm run bundle-colyseus-client) -->
     <script type="text/javascript" src="scripts/colyseus.js"></script>
+    <script src="scripts/main.js"></script>
 
-    <style type="text/css">
-      .player {
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        padding-top: 24px;
-        box-sizing: border-box;
-        left: 0;
-        top: 0;
-      }
-    </style>
-    
   </head>
   <body>
-    <h1>
-      <a href="https://github.com/gamestdio/colyseus-examples"><img src="https://rawgit.com/gamestdio/colyseus/master/media/header.png" height="100" alt="colyseus" /></a>
-    </h1>
-
-    <p>This example shows how to use custom data structures in your room's state.</p>
-
-    <strong>commands</strong><br>
-
-    <button onclick="up()">up</button>
-    <button onclick="down()">down</button>
-    <br />
-    <button onclick="left()">left</button>
-    <button onclick="right()">right</button>
-    <script src="scripts/main.js"></script>
+      <div id="canvas"></div>
   </body>
 </html>
