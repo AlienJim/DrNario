@@ -5,11 +5,11 @@ window.onload = function(){
 
     //Creating pixi canvas and fitting it to screen
     const app = new PIXI.Application((window.innerWidth
-            || document.documentElement.clientWidth
-            || document.body.clientWidth) - 25, 
-              (window.innerHeight
-            || document.documentElement.clientHeight
-            || document.body.clientHeight) - 25);
+                                   || document.documentElement.clientWidth
+                                   || document.body.clientWidth) - 25, 
+                                    ( window.innerHeight
+                                   || document.documentElement.clientHeight
+                                   || document.body.clientHeight) - 25);
     var ele = document.getElementById('canvas');
     ele.appendChild(app.view);
     
@@ -42,7 +42,7 @@ window.onload = function(){
             players[change.path.id].y = change.value;
         }
     });
-    
+
     window.addEventListener("keydown", function (e) {
       console.log("key code: ", e.which);
       if (e.which === 38) {
@@ -74,4 +74,15 @@ window.onload = function(){
     function left () {
       room.send({ x: -1 })
     }
+    //event listener to auto resize window
+    window.addEventListener("resize", () => {   
+        var x =( window.innerWidth
+              || document.documentElement.clientWidth
+              || document.body.clientWidth) - 25;
+        var y =( window.innerHeight
+              || document.documentElement.clientHeight
+              || document.body.clientHeight) - 25;
+
+        app.renderer.resize(x, y);
+    })
  };
