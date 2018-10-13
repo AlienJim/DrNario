@@ -1,13 +1,13 @@
 import { Room, EntityMap, Client, nosync } from "colyseus";
 
-export class State {
-    players: EntityMap<Player> = {};
+export class PixiState {
+    players: EntityMap<PixiPlayer> = {};
 
     @nosync
     something = "This attribute won't be sent to the client-side";
 
     createPlayer (id: string) {
-        this.players[ id ] = new Player();
+        this.players[ id ] = new PixiPlayer();
     }
 
     removePlayer (id: string) {
@@ -24,16 +24,16 @@ export class State {
     }
 }
 
-export class Player {
+export class PixiPlayer {
     x = Math.floor(Math.random() * 400);
     y = Math.floor(Math.random() * 400);
 }
 
-export class StateHandlerRoom extends Room<State> {
+export class PixiStateHandlerRoom extends Room<PixiState> {
     onInit (options) {
         console.log("StateHandlerRoom created!", options);
 
-        this.setState(new State());
+        this.setState(new PixiState());
     }
 
     onJoin (client) {

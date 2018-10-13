@@ -10,7 +10,7 @@ import { ChatRoom } from "./rooms/01-chat-room";
 import { StateHandlerRoom } from "./rooms/02-state-handler";
 import { AuthRoom } from "./rooms/03-auth";
 import { CreateOrJoinRoom } from "./rooms/04-create-or-join-room";
-import { PixiRoom } from "./rooms/pixi";
+import { PixiStateHandlerRoom } from "./rooms/pixi";
 
 const port = Number(process.env.PORT || 2567);
 const app = express();
@@ -39,7 +39,7 @@ gameServer.register("auth", AuthRoom);
 gameServer.register("create_or_join", CreateOrJoinRoom);
 
 //register pixi room that we made
-gameServer.register("pixi", PixiRoom);
+gameServer.register("pixi", PixiStateHandlerRoom);
 
 app.use('/', express.static(path.join(__dirname, "static")));
 app.use('/', serveIndex(path.join(__dirname, "static"), {'icons': true}))
