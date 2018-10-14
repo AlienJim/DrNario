@@ -1,17 +1,18 @@
 const app = new PIXI.Application(getWindowX(), getWindowY());
-var elem;
-var mySprites = {
+
+var myTextures = {
     app: app,
-    ele: elem,
+    ele: document.getElementById('canvas'),
     dubPills: [],
     marios: []
 };
 
 window.onload = function(){
     //Creating pixi canvas and fitting it to screen
-    elem = document.getElementById('canvas');
-    elem.appendChild(app.view);
+    var elem = document.getElementById('canvas');
 
+    elem.appendChild(app.view);
+    myTextures.ele = elem;
     PIXI.loader
             .add("images/bgsheet.png")
             .load(setup);
@@ -25,10 +26,10 @@ window.onload = function(){
                 let rectangle = new PIXI.Rectangle(x + width*i ,y + height*w, width, height);
 
                 newTexture.frame = rectangle;
-                //newTexture._updateUvs();
+                newTexture._updateUvs();
 
                 let sprite = new PIXI.Sprite(newTexture);
-                mySprites.dubPills.push(sprite);
+                myTextures.dubPills.push(newTexture);
             }
         }
 
@@ -36,9 +37,13 @@ window.onload = function(){
         let rectangle = new PIXI.Rectangle(15, 48, 24, 40);
 
         newTexture.frame = rectangle;
-
+        newTexture._updateUvs();
+        /*  ORIGINA CODE
         let sprite = new PIXI.Sprite(newTexture);
-        mySprites.marios.push(sprite);
+        myTextures.marios.push(sprite);
+        */
+       myTextures.marios.push(newTexture);
+
         //console.log(sprite.texture, newTexture.frame);
     }
 }
@@ -52,7 +57,9 @@ function getWindowY(){
         || document.documentElement.clientHeight
         || document.body.clientHeight) - 25;
 }
-            
+function createNewTexture(){
+
+}            
 
 /*
     sprite positions and size

@@ -1,3 +1,4 @@
+
 var host = window.document.location.host.replace(/:.*/, '');
 var client = new Colyseus.Client(location.protocol.replace("http", "ws") + host + (location.port ? ':' + location.port : ''));
 var room = client.join("pixi");
@@ -6,26 +7,20 @@ var players = {};
 // listen to patches coming from the server
 room.listen("players/:id", function(change) {
   if (change.operation === "add") {
-    mySprites.app.stage.addChild(mySprites.marios[0]);
+    var nario = new PIXI.Sprite(myTextures.marios[0]);
 
-    mySprites.marios[0].x = change.value.x;
-    mySprites.marios[0].x = change.value.y;
+    nario.x = change.value.x;
+    nario.y = change.value.y;
 
-    players[change.path.id] = mySprites.marios[0];
+    players[change.path.id] = nario;
+    myTextures.app.stage.addChild(nario);
+    
+    console.log("player id ", change);
 
-    //test to display pills
-    /*
-    var z = 0;
-    mySprites.dubPills.forEach(function(element) {
-        mySprites.app.stage.addChild(element);
-        element.y += z;
-        console.log("does this work");
-        z += 40;
-    });
-    */
+
   } else if (change.operation === "remove") {
     //TODO: FIX SPRITE DELETION
-    mySprites.ele.removeChild(players[change.path.id]);
+    myTextures.app.stage.removeChild(players[change.path.id]);
     delete players[change.path.id];
   }
 });
@@ -74,3 +69,15 @@ function left () {
 window.addEventListener("resize", () => {   
     app.renderer.resize(getWindowX(), getWindowY());
 })
+
+
+//test to display pills
+/*
+var z = 0;
+myTextures.dubPills.forEach(function(element) {
+    myTextures.app.stage.addChild(element);
+    element.y += z;
+    console.log("does this work");
+    z += 40;
+});
+*/

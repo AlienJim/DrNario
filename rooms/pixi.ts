@@ -25,8 +25,8 @@ export class PixiState {
 }
 
 export class PixiPlayer {
-    x = Math.floor(Math.random() * 400);
-    y = Math.floor(Math.random() * 400);
+    x = Math.floor(Math.random() * 100);
+    y = Math.floor(Math.random() * 100);
 
     myBoard: NarioBoard;
 }
