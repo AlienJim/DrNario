@@ -1,22 +1,18 @@
-const app = new PIXI.Application(getWindowX(), getWindowY());
+var Sprites = {
+    loadTextures: function(app){
+        var textures = {
+            app: app,
+            ele: document.getElementById('canvas'),
+            dubPills: [],
+            marios: []
+        };
 
-var myTextures = {
-    app: app,
-    ele: document.getElementById('canvas'),
-    dubPills: [],
-    marios: []
-};
+        //Creating pixi canvas and fitting it to screen
+        var elem = document.getElementById('canvas');
 
-window.onload = function(){
-    //Creating pixi canvas and fitting it to screen
-    var elem = document.getElementById('canvas');
+        elem.appendChild(app.view);
+        textures.ele = elem;
 
-    elem.appendChild(app.view);
-    myTextures.ele = elem;
-    PIXI.loader
-            .add("images/bgsheet.png")
-            .load(setup);
-    function setup(){
         var texture = PIXI.utils.TextureCache['images/bgsheet.png'];
         var x = 12, y = 135, width = 19, height = 11;
 
@@ -29,7 +25,7 @@ window.onload = function(){
                 newTexture._updateUvs();
 
                 let sprite = new PIXI.Sprite(newTexture);
-                myTextures.dubPills.push(newTexture);
+                textures.dubPills.push(newTexture);
             }
         }
 
@@ -40,26 +36,17 @@ window.onload = function(){
         newTexture._updateUvs();
         /*  ORIGINA CODE
         let sprite = new PIXI.Sprite(newTexture);
-        myTextures.marios.push(sprite);
+        textures.marios.push(sprite);
         */
-       myTextures.marios.push(newTexture);
+        textures.marios.push(newTexture);
 
         //console.log(sprite.texture, newTexture.frame);
+        return textures;
     }
-}
-function getWindowX(){
-    return (window.innerWidth
-        || document.documentElement.clientWidth
-        || document.body.clientWidth) - 25;
-}
-function getWindowY(){
-    return (window.innerHeight
-        || document.documentElement.clientHeight
-        || document.body.clientHeight) - 25;
-}
-function createNewTexture(){
+};
 
-}            
+
+      
 
 /*
     sprite positions and size
