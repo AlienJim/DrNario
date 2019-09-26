@@ -1,51 +1,7 @@
-import { Room, EntityMap, Client, nosync } from "colyseus";
+import { Room,  Client, nosync } from "colyseus";
+import { Schema, type, MapSchema } from "@colyseus/schema";
 
-export class PixiState {
-    players: EntityMap<PixiPlayer> = {};
-
-    @nosync
-    something = "This attribute won't be sent to the client-side";
-
-    createPlayer (id: string) {
-        this.players[ id ] = new PixiPlayer();
-    }
-
-    removePlayer (id: string) {
-        delete this.players[ id ];
-    }
-
-    movePlayer (id: string, movement: any) {
-        if (movement.x) {
-            this.players[ id ].x += movement.x * 10;
-
-        } else if (movement.y) {
-            this.players[ id ].y += movement.y * 10;
-        }
-    }
-}
-
-export class PixiPlayer {
-    x = Math.floor(Math.random() * 100);
-    y = Math.floor(Math.random() * 100);
-
-    myBoard: NarioBoard;
-}
-
-class NarioGame {
-    players: EntityMap<PixiPlayer>;
-    virusCount: number;
-
-    startBoard: NarioBoard;
-
-    constructor(players: EntityMap<PixiPlayer>, virusCount: number) {
-        this.players = players;
-        this.virusCount = virusCount;
-
-        this.startBoard = new NarioBoard(this.virusCount);
-    }
-}
-
-export class NarioBoard {
+export class NarioBoard extends Schema {
     //board starts at top left
     //each number represents a color
     //- numbers are viuses!
@@ -57,9 +13,11 @@ export class NarioBoard {
     @nosync
     board: Int8Array;
 
+    @type("float32")
     exportedBoard: number;
     
     constructor(virusCount: number) {
+        super();
         //board starts at top left
         
         //fill array with zeros, zero is empty
@@ -80,10 +38,6 @@ export class NarioBoard {
         }
 
 
-
-        
-
-        
     }
 
     export () {
@@ -92,28 +46,107 @@ export class NarioBoard {
     }
 }
 
-export class PixiStateHandlerRoom extends Room<PixiState> {
-    onInit (options) {
-        console.log("StateHandlerRoom created!", options);
+export class NarioPlayer extends Schema {
+    //block position
+    @type("number")
+    x: number = Math.floor(Math.random() * 100);
+    @type("number")
+    y: number = Math.floor(Math.random() * 100);
 
-        this.setState(new PixiState());
+    //block list?
+
+    //block list index??
+    @type(NarioBoard)
+    myBoard: NarioBoard;
+}
+
+export class PixiState extends Schema {
+    @type({ map: NarioPlayer })
+    players = new MapSchema<NarioPlayer>();
+
+    @nosync
+    something = "This attribute won't be sent to the client-side";
+
+    createPlayer (id: string) {
+        this.players[ id ] = new NarioPlayer();
     }
 
-    onJoin (client) {
+    removePlayer (id: string) {
+        delete this.players[ id ];
+    }
+
+    movePlayer (id: string, movement: any) {
+        if (movement.x) {
+            this.players[ id ].x += movement.x * 10;
+
+        } else if (movement.y) {
+            this.players[ id ].y += movement.y * 10;
+        }
+    }
+}
+
+export class NarioGame extends Schema{
+    @type({ map: NarioPlayer })
+    players = new MapSchema<NarioPlayer>();
+
+    @type("number")
+    virusCount: number;
+
+    @type(NarioBoard)
+    startBoard: NarioBoard;
+
+    constructor(virusCount: number) {
+        super();
+        this.virusCount = virusCount;
+
+        this.startBoard = new NarioBoard(this.virusCount);
+    }
+
+    
+    @nosync
+    something = "This attribute won't be sent to the client-side";
+
+    createPlayer (id: string) {
+        this.players[ id ] = new NarioPlayer();
+    }
+
+    removePlayer (id: string) {
+        delete this.players[ id ];
+    }
+
+    movePlayer (id: string, movement: any) {
+        if (movement.x) {
+            this.players[ id ].x += movement.x * 10;
+
+        } else if (movement.y) {
+            this.players[ id ].y += movement.y * 10;
+        }
+    }
+}
+
+
+export class PixiStateHandlerRoom extends Room<PixiState> {
+    onCreate (options) {
+        console.log("StateHandlerRoom created!", options);
+
+        this.setState(new NarioGame(20));
+    }
+
+    onJoin (client: Client) {
         this.state.createPlayer(client.sessionId);
     }
 
-    onLeave (client) {
+    onLeave (client: Client, consented: boolean) {
         this.state.removePlayer(client.sessionId);
     }
 
-    onMessage (client, data) {
+    onMessage (client: Client, data) {
         console.log("StateHandlerRoom received message from", client.sessionId, ":", data);
         this.state.movePlayer(client.sessionId, data);
     }
 
     onDispose () {
-        console.log("Dispose StateHandlerRoom");
+        console.log("Dispose Room");
     }
 
 }
