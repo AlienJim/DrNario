@@ -18,7 +18,7 @@
     "@colyseus/monitor": "^0.11.5",
     "colyseus": "^0.11.14",
     "colyseus.js": "^0.11.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "nodemon": "^1.19.2",
     "pixi.js": "^5.1.5",
     "serve-index": "^1.8.0",
